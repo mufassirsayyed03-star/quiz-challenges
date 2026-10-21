@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Quiz</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f5f3ff, #ecfeff);
+            color: #1e293b;
+            min-height: 100vh;
+            padding: 35px 16px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: auto;
+        }
+
+        .form-card {
+            background: #fff;
+            padding: 32px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(15, 23, 42, 0.09);
+            border: 1px solid #e2e8f0;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+            color: #312e81;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+            background: #f8fafc;
+            color: #0f172a;
+            transition: 0.2s ease;
+        }
+
+        input:focus {
+            border-color: #6366f1;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .section-label {
+            margin: 22px 0 12px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .correct-field input {
+            border-color: #86efac;
+            background: #f0fdf4;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 13px 20px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .save-btn {
+            width: 100%;
+            margin-top: 8px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            box-shadow: 0 5px 14px rgba(79, 70, 229, 0.2);
+        }
+
+        .save-btn:hover {
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        #error,
+        #success {
+            display: none;
+            padding: 12px 14px;
+            border-radius: 9px;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        #error {
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        #success {
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .list-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin: 35px 0 18px;
+        }
+
+        .list-heading h2 {
+            font-size: 23px;
+            color: #312e81;
+        }
+
+        #quizCount {
+            background: #e0e7ff;
+            color: #4338ca;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .quiz-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+            overflow-wrap: anywhere;
+        }
+
+        .quiz-card h3 {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .option-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .option-list li {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 11px 12px;
+            border-radius: 9px;
+            font-size: 14px;
+        }
+
+        .correct-answer {
+            padding: 11px 13px;
+            border-radius: 9px;
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+            font-size: 14px;
+            margin-bottom: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .remove-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 10px 14px;
+        }
+
+        .remove-btn:hover {
+            background: #fecaca;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 28px 15px;
+            color: #64748b;
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px dashed #cbd5e1;
+            border-radius: 14px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .form-card {
+                padding: 22px 16px;
+                border-radius: 15px;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 22px;
+            }
+
+            .quiz-options,
+            .option-list {
+                grid-template-columns: 1fr;
+                gap: 11px;
+            }
+
+            input {
+                font-size: 16px;
+                padding: 13px;
+            }
+
+            .list-heading h2 {
+                font-size: 20px;
+            }
+
+            .quiz-card {
+                padding: 17px;
+            }
+
+            .quiz-card h3 {
+                font-size: 16px;
+            }
+
+            button {
+                min-height: 44px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+
+        <section class="form-card">
+            <h1>📝 Add Quiz</h1>
+            <p class="subtitle">
+                Create your own quiz by adding a question, four options and the correct answer.
+            </p>
+
+            <div id="error" role="alert"></div>
+            <div id="success" role="status"></div>
+
+            <div class="field">
+                <label for="quizField">Your Question</label>
+                <input type="text" id="quizField" placeholder="Enter your question">
+            </div>
+
+            <p class="section-label">Answer Options</p>
+
+            <div class="quiz-options">
+                <div class="field">
+                    <label for="option1">Option 1</label>
+                    <input type="text" id="option1" placeholder="First option">
+                </div>
+
+                <div class="field">
+                    <label for="option2">Option 2</label>
+                    <input type="text" id="option2" placeholder="Second option">
+                </div>
+
+                <div class="field">
+                    <label for="option3">Option 3</label>
+                    <input type="text" id="option3" placeholder="Third option">
+                </div>
+
+                <div class="field">
+                    <label for="option4">Option 4</label>
+                    <input type="text" id="option4" placeholder="Fourth option">
+                </div>
+            </div>
+
+            <div class="field correct-field">
+                <label for="correctAnswer">Correct Answer</label>
+                <input type="text" id="correctAnswer" placeholder="Enter the correct option text">
+            </div>
+
+            <button class="save-btn" onclick="saveQuiz()">+ Save Quiz</button>
+        </section>
+
+        <div class="list-heading">
+            <h2>Your Quizzes</h2>
+            <span id="quizCount">0 quizzes</span>
+        </div>
+
+        <section id="quizList"></section>
+
+    </main>
+
+    <script>
+        function saveQuiz() {
+            const question = document.getElementById('quizField').value.trim();
+            const option1 = document.getElementById('option1').value.trim();
+            const option2 = document.getElementById('option2').value.trim();
+            const option3 = document.getElementById('option3').value.trim();
+            const option4 = document.getElementById('option4').value.trim();
+            const correctAnswer = document.getElementById('correctAnswer').value.trim();
+
+            const error = document.getElementById('error');
+            const success = document.getElementById('success');
+
+            error.style.display = 'none';
+            success.style.display = 'none';
+
+            const fields = [
+                question, option1, option2,
+                option3, option4, correctAnswer
+            ];
+
+            if (fields.some(value => value === '')) {
+                error.innerText = 'Please fill in all fields.';
+                error.style.display = 'block';
+                return;
+            }
+
+            const options = [option1, option2, option3, option4];
+
+            if (!options.includes(correctAnswer)) {
+                error.innerText = 'Correct answer must match one of the four options.';
+                error.style.display = 'block';
+                return;
+            }
+
+            const questions = JSON.parse(localStorage.getItem('quiz')) || [];
+
+            if (questions.some(q =>
+                q.question.toLowerCase() === question.toLowerCase()
+            )) {
+                error.innerText = 'Duplicate question not allowed.';
+                error.style.display = 'block';
+                return;
+            }
+
+            const obj = {
+                id: Date.now(),
+                question,
+                option1,
+                option2,
+                option3,
+                option4,
+                correctAnswer
+            };
+
+            questions.push(obj);
+            localStorage.setItem('quiz', JSON.stringify(questions));
+
+            success.innerText = 'Quiz added successfully!';
+            success.style.display = 'block';
+
+            document.getElementById('quizField').value = '';
+            document.getElementById('option1').value = '';
+            document.getElementById('option2').value = '';
+            document.getElementById('option3').value = '';
+            document.getElementById('option4').value = '';
+            document.getElementById('correctAnswer').value = '';
+
+            displayQuiz();
+        }
+
+        function displayQuiz() {
+            const quizList = document.getElementById('quizList');
+            const questions = JSON.parse(localStorage.getItem('quiz')) || [];
+
+            document.getElementById('quizCount').innerText =
+                `${questions.length} ${questions.length === 1 ? 'quiz' : 'quizzes'}`;
+
+            if (questions.length === 0) {
+                quizList.innerHTML = `
+                    <div class="empty-state">
+                        <p>No quizzes yet. Add your first quiz above!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            quizList.innerHTML = '';
+
+            questions.forEach(q => {
+                const card = document.createElement('article');
+                card.className = 'quiz-card';
+
+                const title = document.createElement('h3');
+                title.textContent = q.question;
+
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'option-list';
+
+                [q.option1, q.option2, q.option3, q.option4].forEach((option, i) => {
+                    const item = document.createElement('li');
+                    item.textContent = `${i + 1}. ${option}`;
+                    optionsList.appendChild(item);
+                });
+
+                const answer = document.createElement('p');
+                answer.className = 'correct-answer';
+
+                const strong = document.createElement('strong');
+                strong.textContent = 'Correct Answer: ';
+                answer.append(strong, document.createTextNode(q.correctAnswer));
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-btn';
+                removeBtn.textContent = '🗑 Remove Quiz';
+                removeBtn.addEventListener('click', () => removeQues(q.id));
+
+                card.append(title, optionsList, answer, removeBtn);
+                quizList.appendChild(card);
+            });
+        }
+
+        function removeQues(quizId) {
+            let questions = JSON.parse(localStorage.getItem('quiz')) || [];
+
+            questions = questions.filter(item => item.id !== quizId);
+
+            localStorage.setItem('quiz', JSON.stringify(questions));
+            displayQuiz();
+        }
+
+        displayQuiz();
+    </script>
+</body>
+
+</html>
