@@ -30,19 +30,19 @@ Note: Update the filenames above if your actual project structure is different.
 
 🚀 Getting Started
 1. Clone the repository
-git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
+git clone (https://github.com/mufassirsayyed03-star/quiz-challenges)
 
 2. Open the project
 
 Navigate to the project folder:
 
-cd YOUR-REPOSITORY
+cd quiz-challenges
 
 3. Run the application
 
-Open index.html in your browser to add quiz questions.
+Open add-quiz.html in your browser to add quiz questions.
 
-Then open play.html to play the quiz.
+Then open play-quiz.html to play the quiz.
 
 You can also use the Live Server extension in Visual Studio Code for local development.
 
@@ -63,15 +63,9 @@ Quiz data remains available after refreshing the page in the same browser and or
 No database or backend server is required.
 Data is not automatically shared across different browsers or devices.
 Clearing the browser's local storage may remove saved quizzes.
-📸 Screenshots
 
-Add screenshots of your application here to showcase the interface.
 
-![Add Quiz Page](screenshots/add-quiz.png)
-
-![Play Quiz Page](screenshots/play-quiz.png)
-
-🔮 Future Improvements
+🔮 Future Improvements we can add in porject
 Add a timer for each question.
 Add categories and difficulty levels.
 Display a leaderboard.
@@ -92,9 +86,6 @@ Form validation
 Responsive web design using CSS
 Building interactive user interfaces
 👨‍💻 Author
-
-Your Name
-
 GitHub: @mufassirsayyed03-star
 
 ⭐ If you like this project, consider giving it a star on GitHub!
